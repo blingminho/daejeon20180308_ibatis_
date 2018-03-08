@@ -47,7 +47,6 @@ public class MemberDao implements MemberDaoInf{
 			Object obj = smc.insert("member.memInsert", memVo);
 			if (obj == null) {// insert메서드는 자료 추가가 성공하였을때 null값 반환함
 				cnt = 1;
-				System.out.println("sdfsdfsdfsd");
 			}		
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -59,25 +58,53 @@ public class MemberDao implements MemberDaoInf{
 	// 주어진 회원ID에 해당하는 회원 정보를 삭제하는 메서드
 	@Override
 	public int deleteMember(String memId) {
-		return 0;
+		int cnt = 0;
+		try {
+			cnt = smc.delete("member.memDelete", memId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
 	}
 	
 	// 주어진 회원정보로 DB의 회원 정보를 update하는 메서드
 	@Override
 	public int updateMember(MemberVO memVo) {
-		return 0;
+		int cnt = 0;
+		try {
+			cnt = smc.update("member.memUpdate", memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
 	}
 
 	// DB에서 전체 회원 정보를 가져와 List로 담아서 반환하는 메서드
 	@Override
 	public List<MemberVO> getAllMember() {
-		return null;
+		List<MemberVO> list = null;
+		try {
+			list = (ArrayList<MemberVO>)smc.queryForList("member.getMemberAll");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	// 해당 회원이 있으면 1, 없으면 0을 반환하는 메서드
 	@Override
 	public int getCountMember(String memId) {
-		return 0;
+		int cnt = 0;
+		try {
+			MemberVO mvo = (MemberVO)smc.queryForObject("member.getMember", memId);
+			if (mvo != null) {
+				cnt = 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return cnt;
 	}
 
 	// 검색하기 메서드
