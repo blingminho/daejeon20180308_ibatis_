@@ -92,10 +92,7 @@ public class MemberDao implements MemberDaoInf{
 	public int getCountMember(String memId) {
 		int cnt = 0;
 		try {
-			MemberVO mvo = (MemberVO)smc.queryForObject("member.getMember", memId);
-			if (mvo != null) {
-				cnt = 1;
-			}
+			cnt = (int)smc.queryForObject("member.getMemberCount", memId);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -106,8 +103,13 @@ public class MemberDao implements MemberDaoInf{
 	// 검색하기 메서드
 	@Override
 	public List<MemberVO> searchMember(MemberVO memVo) {
-		
-		return null;
+		List<MemberVO> memList = null;
+		try {
+			memList = smc.queryForList("member.getSearchMember", memVo);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return memList;
 	}
 
 }
