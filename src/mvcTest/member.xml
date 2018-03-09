@@ -64,8 +64,19 @@
 		select * from mymember where mem_id=#mem_id#
 	</select>
 	
-	<select id="selectMember" parameterClass="memVO2" resultClass="memVO2">
-		select * from mymember where mem_id=#mem_id#
+	<select id="getMemberCount" parameterClass="String" resultClass="int">
+		select count(*) from mymember where mem_id=#mem_id#
+	</select>
+	
+	<select id="getSearchMember" parameterClass="memVO2" resultClass="memVO2">
+		select * from mymember
+		where mem_id=#mem_id# or mem_name=#mem_name#
+			or mem_tel=#mem_tel#
+			<dynamic prepend="or">
+				<isNotEmpty property="mem_addr">
+					mem_addr like '%' || #mem_addr# || '%'
+				</isNotEmpty>
+			</dynamic>
 	</select>
 	
 </sqlMap>
